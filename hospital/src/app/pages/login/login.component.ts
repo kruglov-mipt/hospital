@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { AuthResponeData, LoginService } from './login.service';
 import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -16,6 +17,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: UntypedFormBuilder,
     private loginService: LoginService,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -46,8 +48,12 @@ export class LoginComponent implements OnInit {
     }
 
     loginObs.subscribe({
-      next: (response) => {
-        console.log(response);
+      next: () => {
+        if(mode === 'signUp') {
+          this.router.navigate(['/edit-profile'])
+        } else {
+          return;
+        }
         this.errorMessage = '';
       },
       error: (error) => this.errorMessage = error, 
